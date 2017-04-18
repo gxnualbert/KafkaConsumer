@@ -1,5 +1,6 @@
 import fsp_proto_pb2 as fsp_pb
-import as_proto_pb2 as as_pb
+import fsp_common_pb2 as common_pb
+
 import struct
 
 
@@ -7,76 +8,76 @@ def hton(num):
     return struct.pack('i', num)
 # def partbuf():
 #     return buf[type_hton,sep_hton]
-
-# NC login AS
-def NCLoginAS(user_name,user_passwd,seq=0):
-    NCLAS=as_pb.LoginReq()
-    NCLAS.user_name=user_name
-    NCLAS.user_passwd=user_passwd
-
-    NCLAS_msg=NCLAS.SerializeToString()
-    type=as_pb.InterfaceType.Value('TypeLoginReq')
-    # return buf
-    fmt="!2i%ds"%len(NCLAS_msg)
-    buf=struct.pack(fmt,type,seq,NCLAS_msg)
-
-    ltype, seq, msg = struct.unpack(fmt, buf)
-
-    print ltype, seq, msg
-
-    return  buf
-
-# NC apply stream from as
-def NCApplyStreamFromAS(stream_type,stream_property,seq=0):
-    NCASFAS=as_pb.ApplyForStreamReq()
-    NCASFAS.stream_type=stream_type
-    NCASFAS.stream_property=stream_property
-
-    NCASFAS_msg=NCASFAS.SerializeToString()
-
-    type=as_pb.InterfaceType.Value('TypeApplyForStreamReq')
-
-    seq_hton = hton(seq)
-    type_hton = hton(type)
-    buf = [type_hton, seq_hton, NCASFAS_msg]
-
-    return buf
-
-def NCGetProxy(proxy_type,exception_proxy):
-    list=[]
-    return list
-
-# NC notify that stream had been published
-def NCNotifyStreamPublished(stream_id,seq=0):
-    NCNSP=as_pb.UpwardNotifyStreamPublishedReq()
-    NCNSP.stream_id=stream_id
-
-    NCNSP_msg=NCNSP.SerializeToString()
-
-    type=as_pb.InterfaceType.Value('TypeUpwardNotifyStreamPublishedReq')
-    seq_hton = hton(seq)
-    type_hton = hton(type)
-    buf = [type_hton, seq_hton, NCNSP_msg]
-
-    return buf
-
-
-# AS notify (NC2)that NC(1) had been had been published stream
-
-def ASNotifyStreamPublished(stream_id,stream_type,stream_subscribe_token,seq=0):
-    ASNSP=as_pb.DownwardNotifyStreamPublishedReq()
-    ASNSP.stream_id=stream_id
-    ASNSP.stream_type=stream_type
-    ASNSP.stream_subscribe_token=stream_subscribe_token
-
-    ASNSP_msg=ASNSP.SerializeToString()
-    type=as_pb.InterfaceType.Value('TypeDownwardNotifyStreamPublishedReq')
-
-    seq_hton = hton(seq)
-    type_hton = hton(type)
-    buf = [type_hton, seq_hton, ASNSP_msg]
-
-    return buf
+#
+# # NC login AS
+# def NCLoginAS(user_name,user_passwd,seq=0):
+#     NCLAS=as_pb.LoginReq()
+#     NCLAS.user_name=user_name
+#     NCLAS.user_passwd=user_passwd
+#
+#     NCLAS_msg=NCLAS.SerializeToString()
+#     type=as_pb.InterfaceType.Value('TypeLoginReq')
+#     # return buf
+#     fmt="!2i%ds"%len(NCLAS_msg)
+#     buf=struct.pack(fmt,type,seq,NCLAS_msg)
+#
+#     ltype, seq, msg = struct.unpack(fmt, buf)
+#
+#     print ltype, seq, msg
+#
+#     return buf
+#
+# # NC apply stream from as
+# def NCApplyStreamFromAS(stream_type,stream_property,seq=0):
+#     NCASFAS=as_pb.ApplyForStreamReq()
+#     NCASFAS.stream_type=stream_type
+#     NCASFAS.stream_property=stream_property
+#
+#     NCASFAS_msg=NCASFAS.SerializeToString()
+#
+#     type=as_pb.InterfaceType.Value('TypeApplyForStreamReq')
+#
+#     seq_hton = hton(seq)
+#     type_hton = hton(type)
+#     buf = [type_hton, seq_hton, NCASFAS_msg]
+#
+#     return buf
+#
+# def NCGetProxy(proxy_type,exception_proxy):
+#     list=[]
+#     return list
+#
+# # NC notify that stream had been published
+# def NCNotifyStreamPublished(stream_id,seq=0):
+#     NCNSP=as_pb.UpwardNotifyStreamPublishedReq()
+#     NCNSP.stream_id=stream_id
+#
+#     NCNSP_msg=NCNSP.SerializeToString()
+#
+#     type=as_pb.InterfaceType.Value('TypeUpwardNotifyStreamPublishedReq')
+#     seq_hton = hton(seq)
+#     type_hton = hton(type)
+#     buf = [type_hton, seq_hton, NCNSP_msg]
+#
+#     return buf
+#
+#
+# # AS notify (NC2)that NC(1) had been had been published stream
+#
+# def ASNotifyStreamPublished(stream_id,stream_type,stream_subscribe_token,seq=0):
+#     ASNSP=as_pb.DownwardNotifyStreamPublishedReq()
+#     ASNSP.stream_id=stream_id
+#     ASNSP.stream_type=stream_type
+#     ASNSP.stream_subscribe_token=stream_subscribe_token
+#
+#     ASNSP_msg=ASNSP.SerializeToString()
+#     type=as_pb.InterfaceType.Value('TypeDownwardNotifyStreamPublishedReq')
+#
+#     seq_hton = hton(seq)
+#     type_hton = hton(type)
+#     buf = [type_hton, seq_hton, ASNSP_msg]
+#
+#     return buf
 
 #NC login CP
 def LoginCP(client_token,seq= 0):
